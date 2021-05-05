@@ -23,7 +23,9 @@ class ScoreAnalyzer
     request['x-rapidapi-host'] = 'free-nba.p.rapidapi.com'
 
     response = http.request(request)
-    game_count = JSON.parse(response.read_body)['data'].length
-    "#{game_count} games"
+    games_data = JSON.parse(response.read_body)['data']
+    game_count = games_data.length
+    team_scores = games_data.map { |game| [game["home_team_score"], game["visitor_team_score"]] }
+    "#{game_count} games closest score #{team_scores}"
   end
 end

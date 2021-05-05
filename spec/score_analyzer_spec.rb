@@ -11,7 +11,7 @@ describe ScoreAnalyzer do
   it 'should analyze that there are 25 games' do
     VCR.use_cassette('teams') do
       score_analyzer = ScoreAnalyzer.new('TEST_RAPIDAPI_KEY')
-      expect(score_analyzer.analyze).to eq '25 games'
+      expect(score_analyzer.analyze).to eq '25 games closest score 1 1'
     end
   end
 end
