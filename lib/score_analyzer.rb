@@ -7,25 +7,25 @@ class ScoreAnalyzer
     @api_key = api_key
   end
 
-  def analyze
+  def game_details(game_index, attribute)
     require 'uri'
     require 'net/http'
     require 'openssl'
 
-    url = URI('https://free-nba.p.rapidapi.com/games?page=0')
+    url = URI("https://api-nba-v1.p.rapidapi.com/games/date/2021-05-23")
 
     http = Net::HTTP.new(url.host, url.port)
     http.use_ssl = true
     http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
     request = Net::HTTP::Get.new(url)
-    request['x-rapidapi-key'] = @api_key
-    request['x-rapidapi-host'] = 'free-nba.p.rapidapi.com'
+    request["x-rapidapi-key"] = @api_key
+    request["x-rapidapi-host"] = 'api-nba-v1.p.rapidapi.com'
 
     response = http.request(request)
-    games_data = JSON.parse(response.read_body)['data']
-    game_count = games_data.length
-    team_scores = games_data.map { |game| [game["home_team_score"], game["visitor_team_score"]] }
-    "#{game_count} games closest score #{team_scores}"
+    return JSON.parse(response.read_body)["api"]["games"][game_index][attribute]
   end
 end
+
+# score = ScoreAnalyzer.new('123')
+# score.analyze
